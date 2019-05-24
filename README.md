@@ -19,3 +19,9 @@ To use this image effectively, you should mount directories from the host machin
 ```
   -v, --volume list                    Bind mount a volume
 ```
+
+## Bonus Material
+
+The following projects are embedded in this container image for your convenience:
+
+* https://github.com/Wandmalfarbe/pandoc-latex-template
