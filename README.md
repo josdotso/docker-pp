@@ -20,6 +20,15 @@ pp="docker run --rm -it josdotso/pp"
 ${pp} --help
 ```
 
+### Building and Viewing the Example Documentation
+
+```
+cd examples/tech-doc
+make all
+open dist/pdf/tech-doc.pdf
+open dist/html/tech-doc.html
+```
+
 ### Accessing Files
 
 To use this image effectively, you should mount directories from the host machine into the container. To do this with `docker run`, see the `-v` argument in `docker run --help`.
