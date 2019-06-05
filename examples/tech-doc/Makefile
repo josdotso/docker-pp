@@ -2,21 +2,22 @@
 
 OUT_NAME = tech-doc
 
-DIST_DIR = ./dist
-BUILD_DIR = ./build
+DIR_NAME := $(PWD)
+DIST_DIR = dist
+BUILD_DIR = build
 TEMPLATE = ~/.pandoc/templates/eisvogel.latex
 
 #######################################
 # Docker-Based Build Targets
 
 all: check  ## Makes all documentation formats
-	docker run -v $(PWD):/tech-doc --entrypoint "/bin/bash" --rm -it josdotso/docker-pp:pp -c 'make -C /tech-doc _$@'
+	docker run -v $(DIR_NAME):/doc --entrypoint "/bin/bash" --rm -it josdotso/pp:latest -c 'cd /doc && make _$@'
 
 html: check ## Makes HTML sources
-	docker run -v $(PWD):/tech-doc --entrypoint "/bin/bash" --rm -it josdotso/docker-pp:pp -c 'make -C /tech-doc _$@'
+	docker run -v $(DIR_NAME):/doc --entrypoint "/bin/bash" --rm -it josdotso/pp:latest -c 'cd /doc && make _$@'
 
 pdf: check  ## Makes a PDF
-	docker run -v $(PWD):/tech-doc --entrypoint "/bin/bash" --rm -it josdotso/docker-pp:pp -c 'make -C /tech-doc _$@'
+	docker run -v $(DIR_NAME):/doc --entrypoint "/bin/bash" --rm -it josdotso/pp:latest -c 'cd /doc && make _$@'
 
 #######################################
 # Local Private Build Targets
@@ -43,7 +44,7 @@ $(DIST_DIR)/html/$(OUT_NAME).html: $(BUILD_DIR)/$(OUT_NAME).tex
 	  -o $(DIST_DIR)/html/$(OUT_NAME).html \
 	  $(BUILD_DIR)/$(OUT_NAME).tex
 	rsync -a --prune-empty-dirs --include '*/' --include '*.svg' --exclude '*' $(BUILD_DIR)/ $(DIST_DIR)/html
-	sed -i 's@$(BUILD_DIR)/@@g' dist/html/tech-doc.html
+	sed -i 's@$(BUILD_DIR)/@@g' dist/html/$(OUT_NAME).html
 
 $(DIST_DIR)/pdf/$(OUT_NAME).pdf: $(BUILD_DIR)/main.md
 	mkdir -p $(DIST_DIR)/pdf
